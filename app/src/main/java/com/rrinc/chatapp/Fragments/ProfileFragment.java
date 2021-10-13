@@ -51,6 +51,7 @@ public class ProfileFragment extends Fragment {
     CircleImageView image_profile;
     TextView username;
 
+    //access data base
     DatabaseReference reference;
     FirebaseUser fuser;
 
