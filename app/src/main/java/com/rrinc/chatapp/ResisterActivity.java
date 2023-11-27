@@ -1,13 +1,13 @@
 package com.rrinc.chatapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -68,6 +68,7 @@ public class ResisterActivity extends AppCompatActivity {
                         String userid=firebaseUser.getUid();
 
                         reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+
 
                         HashMap<String,String> hashMap = new HashMap<>();
                         hashMap.put("id",userid);

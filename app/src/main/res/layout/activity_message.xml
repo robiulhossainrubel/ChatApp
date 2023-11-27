@@ -19,10 +19,13 @@
             android:background="@color/colorPrimaryDark"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/MenuStyle">
-
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:src="@drawable/blankpp"
                 android:id="@+id/profile_image"/>
 
             <TextView
@@ -30,11 +33,21 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/username"
                 android:textColor="#fff"
+                android:text="Rubel"
                 android:textStyle="bold"
-                android:layout_marginLeft="25dp"/>
-
+                android:layout_marginLeft="35dp"/>
+            <TextView
+                android:layout_below="@id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/status"
+                android:textColor="#fff"
+                android:text="Online"
+                android:textSize="10dp"
+                android:textStyle="normal"
+                android:layout_marginLeft="35dp"/>
+        </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView

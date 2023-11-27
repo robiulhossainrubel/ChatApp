@@ -6,15 +6,25 @@ public class User {
     private String username;
     private String imageURL;
     private String status;
+    private String typestatus;
 
     public User() {
     }
 
-    public User(String id, String username, String imageURL, String status) {
+    public User(String id, String username, String imageURL, String status, String typestatus) {
         this.id = id;
         this.username = username;
         this.imageURL = imageURL;
         this.status = status;
+        this.typestatus = typestatus;
+    }
+
+    public String getTypestatus() {
+        return typestatus;
+    }
+
+    public void setTypestatus(String typestatus) {
+        this.typestatus = typestatus;
     }
 
     public String getId() {
