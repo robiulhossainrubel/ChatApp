@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rrinc.chatapp.Adapter.UserAdapter;
 import com.rrinc.chatapp.Model.Chat;
+import com.rrinc.chatapp.Model.Chatlist;
 import com.rrinc.chatapp.Model.User;
 import com.rrinc.chatapp.R;
 
@@ -35,7 +36,7 @@ public class ChatFragment extends Fragment {
     private List<User> mUser;
     FirebaseUser fuser;
     DatabaseReference reference;
-    private List<String> userlist;
+    private List<Chatlist> userlist;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,31 +50,20 @@ public class ChatFragment extends Fragment {
 
         userlist = new ArrayList<>();
 
-        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(fuser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userlist.clear();
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Chat chat = snapshot.getValue(Chat.class);
-
-                    assert chat != null;
-                    if (chat.getSender().equals(fuser.getUid())){
-                        userlist.add(chat.getReciver());
-                    }
-                    if (chat.getReciver().equals(fuser.getUid())){
-                        userlist.add(chat.getSender());
-                    }
+                for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                    Chatlist chatlist = snapshot1.getValue(Chatlist.class);
+                    userlist.add(chatlist);
                 }
-                
-                readChats();
-
+                chatlist();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -81,46 +71,31 @@ public class ChatFragment extends Fragment {
         return view;
     }
 
-    private void readChats() {
-        mUser =new ArrayList<>();
-
+    private void chatlist() {
+        mUser = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Users");
-
         reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mUser.clear();
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
-
-                    //display 1 user from chats
-                    for (String id : userlist){
-                        assert user != null;
-                        if (user.getId().equals(id)){
-                            if (mUser.size() !=0){
-                                for (User user1 : mUser){
-                                    if (!user.getId().equals(user1.getId())){
-                                        mUser.add(user);
-                                    }
-                                }
-                            }else {
-                                mUser.add(user);
-                            }
+                for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                    User user = snapshot1.getValue(User.class);
+                    for (Chatlist chatlist : userlist){
+                        if (user.getId().equals(chatlist.getId())){
+                            mUser.add(user);
                         }
                     }
                 }
-
                 userAdapter = new UserAdapter(getContext(),mUser,true);
                 recyclerView.setAdapter(userAdapter);
-
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
+
 
 }
